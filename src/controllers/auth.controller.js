@@ -4,6 +4,12 @@ import jwt from "../utils/jwt.js"
 
 const registerUser = async (req, res) => {
   try {
+    const token= jwt.createToken(user)
+    const verifiedToken= jwt.verifyToken(token)
+    
+    res.cookie("authToken", token, {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
     const user = await authService.registerUser(req.body);
     res.status(201).json(user);
   } catch (error) {

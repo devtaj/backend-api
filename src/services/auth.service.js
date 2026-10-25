@@ -1,3 +1,4 @@
+import { email } from "zod";
 import User from "../models/Auth.js";
 import bcrypt from "bcrypt";
 
@@ -78,7 +79,11 @@ const loginUser = async (data) => {
 
   return{
     _id:user.id,
-    name:user.name
+    name:user.name,
+    email:user.email,
+    phone:user.phone,
+    role:user.role
+
   }
 };
 
