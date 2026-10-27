@@ -7,9 +7,9 @@ import roleBasedAuth from "../middlewares/roleBasedAuth.js";
 
 const router = express.Router();
 
-router.post("/register",auth,validate(validateSchema.registerSchema), authController.registerUser);
+router.post("/register",validate(validateSchema.registerSchema), authController.registerUser);
 router.get("/users", auth,roleBasedAuth,authController.fetchUser);
-router.post("/login",auth, validate(validateSchema.loginSchema), authController.loginUser);
+router.post("/login", validate(validateSchema.loginSchema), authController.loginUser);
 router.put("/update/:id", auth, roleBasedAuth, authController.updateUser);
 router.delete("/delete/:id", auth, roleBasedAuth, authController.deleteUser);
 

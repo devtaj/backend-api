@@ -4,16 +4,75 @@ import jwt from "../utils/jwt.js"
 
 const registerUser = async (req, res) => {
   try {
-    const token= jwt.createToken(user)
-    const verifiedToken= jwt.verifyToken(token)
-    
-    res.cookie("authToken", token, {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
+    // First, create the user
     const user = await authService.registerUser(req.body);
-    res.status(201).json(user);
+
+    // Then generate the token using the user's ID
+    const token = jwt.createToken({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Registration successful",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
-    res.status(400).json({ message: "Invalid Credintial!" });
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const user = await authService.loginUser(req.body);
+
+    const token = jwt.createToken({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -63,27 +122,6 @@ const deleteUser= async(req, res)=>{
   }
 }
 
-const loginUser = async (req, res) => {
-  try {
-    const user = await authService.loginUser(req.body);
 
-    const token= jwt.createToken(user)
-    const verifiedToken= jwt.verifyToken(token)
-    
-    res.cookie("authToken", token, {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
-     res.status(201).json(
-      {
-      success:true,
-      message:"Login Successfully",
-      data:{...user, token}
-    }
-     );
-     
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
 
 export default { registerUser, loginUser, fetchUser, updateUser, deleteUser};

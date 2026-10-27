@@ -5,19 +5,39 @@ const auth = (req, res, next) => {
   try {
     const cookie = req.headers.cookie;
 
-    const authToken = cookie.split("=")[1];
     if (!cookie) {
-      return res.json("Unauthorized user!");
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized user!",
+      });
     }
+
+    const authToken = cookie
+      .split("; ")
+      .find((item) => item.startsWith("authToken="))
+      ?.substring("authToken=".length);
+
     if (!authToken) {
-      return res.json("Unauthorized user!");
+      return res.status(401).json({
+        success: false,
+        message: "Authentication token missing",
+      });
     }
-    const data = jwt.verify(authToken, config.jwtSecret);
-    console.log(data);
-    req.user = data;
+
+    const decoded = jwt.verify(authToken, config.jwtSecret);
+
+    console.log("Decoded JWT:", decoded);
+
+    req.user = decoded;
+
+    console.log("User ID:", req.user._id);
+
     next();
-  } catch (err) {
-    return res.json("Unauthorized user!");
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token",
+    });
   }
 };
 

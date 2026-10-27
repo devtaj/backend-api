@@ -3,13 +3,21 @@ import config from "./config/config.js";
 import authRoutes from "./routes/auth.route.js"; 
 import connectDatabase from "./config/db.js";
 import logger from "./middlewares/logger.js";
+import heroRoute from "./routes/hero.route.js";
+import aboutRoute from "./routes/about.route.js";
+import cultureAndTraditionRoute from "./routes/cultureAndTradition.route.js"; 
+import storyRoute from "./routes/story.route.js"
 
 const app = express();
 app.use(express.json());
 
 connectDatabase();
 
-app.use("/api/auth", logger, authRoutes);
+app.use("/api/tajpuriya-samaj/auth", logger, authRoutes);
+app.use("/api/tajpuriya-samaj/hero", logger,heroRoute);
+app.use("/api/tajpuriya-samaj/about",logger, aboutRoute);
+app.use("/api/tajpuriya-samaj/culture-and-tradition", logger, cultureAndTraditionRoute);
+app.use("/api/tajpuriya-samaj/stories", storyRoute)
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
