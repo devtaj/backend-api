@@ -8,17 +8,21 @@ import aboutRoute from "./routes/about.route.js";
 import cultureAndTraditionRoute from "./routes/cultureAndTradition.route.js"; 
 import storyRoute from "./routes/story.route.js";
 import multer from "multer";
+import connectCloudinary from "./config/cloudinary.js";
 
 
 const app = express();
 app.use(express.json());
 
+const upload= multer({dest:'uploads'});
+
 
 
 connectDatabase();
+connectCloudinary();
 
 app.use("/api/tajpuriya-samaj/auth", logger, authRoutes);
-app.use("/api/tajpuriya-samaj/hero", logger,heroRoute);
+app.use("/api/tajpuriya-samaj/hero", logger,upload.array("images", 5),heroRoute);
 app.use("/api/tajpuriya-samaj/about",logger, aboutRoute);
 app.use("/api/tajpuriya-samaj/culture-and-tradition", logger, cultureAndTraditionRoute);
 app.use("/api/tajpuriya-samaj/stories", storyRoute)
