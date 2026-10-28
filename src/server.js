@@ -6,10 +6,14 @@ import logger from "./middlewares/logger.js";
 import heroRoute from "./routes/hero.route.js";
 import aboutRoute from "./routes/about.route.js";
 import cultureAndTraditionRoute from "./routes/cultureAndTradition.route.js"; 
-import storyRoute from "./routes/story.route.js"
+import storyRoute from "./routes/story.route.js";
+import multer from "multer";
+
 
 const app = express();
 app.use(express.json());
+
+
 
 connectDatabase();
 
