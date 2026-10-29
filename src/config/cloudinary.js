@@ -9,7 +9,6 @@ const connectCloudinary = () => {
     api_secret: config.cloudinarySecretKey,
   });
 
-  console.log("Cloudinary configured successfully");
 };
 
 export default connectCloudinary;

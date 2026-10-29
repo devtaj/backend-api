@@ -1,14 +1,22 @@
 import { success } from "zod";
 import heroService from "../services/hero.service.js";
+import uploadFile from "../utils/fileUploader.js";
 
 const postHeroData = async (req, res) => {
+
+  const files= await req.files;
+
+  
+
+  console.log(files);
   try {
-    const response = await heroService.postHeroData(req.body);
+    const response = await heroService.postHeroData(req.body, req.files);
 
     return res.send({
       status: 201,
       message: "Created Successfully.",
       data: response,
+     
     });
   } catch (error) {
     res.status(401).json({

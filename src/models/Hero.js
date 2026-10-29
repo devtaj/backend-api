@@ -14,6 +14,9 @@ const heroSchema = new mongoose.Schema({
     },
     description:{
         type:String,
+    },
+    imageUrl:{
+        type:[String]
     }
 
 });

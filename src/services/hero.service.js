@@ -1,8 +1,9 @@
-
+import uploadFile from "../utils/fileUploader.js";
 import Hero from "../models/Hero.js";
 
-const postHeroData= async(userData)=>{
-    const data= await Hero.create(userData);
+const postHeroData= async(userData,files)=>{
+    const uploadedFiles= await uploadFile(files)
+    const data= await Hero.create({...userData, imageUrl:uploadedFiles.map((file)=>file.url)} );
     return data;
 }
 
