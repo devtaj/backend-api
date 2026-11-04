@@ -1,5 +1,6 @@
 import uploadFile from "../utils/fileUploader.js";
 import Hero from "../models/Hero.js";
+import { input } from "zod";
 
 const postHeroData= async(userData,files)=>{
     const uploadedFiles= await uploadFile(files)
@@ -12,13 +13,26 @@ const fetchHeroData= async()=>{
     const data= await Hero.find();
     return data;
 }
-const updateHeroData= async(id, data)=>{
-    const dataHero= await Hero.findByIdAndUpdate(id, data,{
-        new:true,
-    });
-    return dataHero;
+const updateHeroData = async (id, files, data) => {
+  const updateData = { ...data };
 
-}
+  if (files && files.length > 0) {
+    const uploadedFiles = await uploadFile(files);
+
+    updateData.imageUrl = uploadedFiles.map((file) => file.url);
+  }
+
+  const dataHero = await Hero.findByIdAndUpdate(
+    id,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return dataHero;
+};
 const deleteHeroData= async(id)=>{
     const dataHero= await Hero.findByIdAndDelete(id);
     return dataHero;

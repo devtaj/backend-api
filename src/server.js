@@ -28,7 +28,12 @@ app.use("/api/tajpuriya-samaj/about",logger, aboutRoute);
 app.use("/api/tajpuriya-samaj/culture-and-tradition", logger, cultureAndTraditionRoute);
 app.use("/api/tajpuriya-samaj/stories", storyRoute)
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  res.json({
+    status:"ok",
+    version:"0.1.0",
+    port:config.port,
+    project:"tajpuriya_samaj"
+  })
 });
 
 app.listen(config.port, () => {

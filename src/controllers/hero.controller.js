@@ -5,9 +5,6 @@ import uploadFile from "../utils/fileUploader.js";
 const postHeroData = async (req, res) => {
 
   const files= await req.files;
-
-  
-
   console.log(files);
   try {
     const response = await heroService.postHeroData(req.body, req.files);
@@ -44,7 +41,7 @@ const fetchHeroData = async (req, res) => {
 
 const updateHeroData= async(req, res)=>{
   try{
-    const heroData= await heroService.updateHeroData(req.params.id, req.body);
+    const heroData= await heroService.updateHeroData(req.params.id, req.files, req.body);
     return res.json({
       status:201,
       success:true,

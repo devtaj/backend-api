@@ -46,6 +46,11 @@ const updateUser= async(id, data)=>{
   }
 }
 
+const updateImageUrl= async(id, files)=>{
+  
+
+}
+
 const deleteUser= async(id)=>{
   const user= await User.findByIdAndDelete(id)
  

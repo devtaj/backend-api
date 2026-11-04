@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(ROLES),
       default: ROLES.MEMBER,
     },
+    profileImageUrl:{
+      type:String
+    },
 
     isActive: {
       type: Boolean,
