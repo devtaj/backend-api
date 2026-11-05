@@ -1,6 +1,7 @@
 import { email } from "zod";
 import User from "../models/Auth.js";
 import bcrypt from "bcrypt";
+import uploadFile from "../utils/fileUploader.js";
 
 const registerUser = async (data) => {
   try {
@@ -46,10 +47,20 @@ const updateUser= async(id, data)=>{
   }
 }
 
-const updateImageUrl= async(id, files)=>{
-  
+const updateImageUrl = async (id, file) => {
+    const uploadedFiles = await uploadFile([file]);
+    console.log(uploadedFiles);
+    const updatedUser = await User.findByIdAndUpdate(
+        id, 
+        { profileImageUrl: uploadedFiles[0].url },
+        {
+            returnDocument: "after",
+            runValidators: true
+        }
+    );
 
-}
+    return updatedUser;
+};
 
 const deleteUser= async(id)=>{
   const user= await User.findByIdAndDelete(id)
@@ -92,4 +103,4 @@ const loginUser = async (data) => {
   }
 };
 
-export default { registerUser, loginUser, fetchUser, updateUser, deleteUser };
+export default { registerUser, loginUser, fetchUser, updateUser, deleteUser, updateImageUrl };

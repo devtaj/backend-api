@@ -1,9 +1,17 @@
 import About from "../models/About.js";
+import uploadFile from "../utils/fileUploader.js";
 
-const createAbout= async (data)=>{
-    const aboutData= await About.create(data);
+const createAbout = async (data, files) => {
+    const uploadedFiles = await uploadFile(files);
+    console.log(uploadedFiles);
+
+    const aboutData = await About.create({
+        ...data,
+        imageUrl: uploadedFiles.map(file => file.url)
+    });
+
     return aboutData;
-}
+};
 
 const fetchAbout= async()=>{
     const aboutData= await About.find();

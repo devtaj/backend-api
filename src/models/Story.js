@@ -18,6 +18,9 @@ const storySchema = new mongoose.Schema(
       ref: "Auth",
       required: true,
     },
+    imageUrl:{
+        type:[String]
+    }
   },
   { timestamps: true },
 );

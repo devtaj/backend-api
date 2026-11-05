@@ -1,7 +1,9 @@
 import Story from "../models/Story.js";
+import uploadFile from "../utils/fileUploader.js";
 
-const createStory= async (data, userId)=>{
-    const storyData= await Story.create({...data, createdBy: userId});
+const createStory= async (data, files, userId)=>{
+    const uploadedFiles = await uploadFile(files);
+    const storyData= await Story.create({...data, imageUrl: uploadedFiles.map(file => file.url), createdBy: userId});
     return storyData;
 }
 

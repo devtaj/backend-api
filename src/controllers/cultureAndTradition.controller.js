@@ -4,6 +4,7 @@ import cultureAndTraditionService from "../services/cultureAndTradition.service.
 const createCultureandTraditins = async (req, res) => {
   try {
     const userId = req.user?._id;
+
     console.log("User ID from request:", userId); // Log the user ID for debugging
 
     if (!userId) {
@@ -16,6 +17,7 @@ const createCultureandTraditins = async (req, res) => {
     const cultureandTraditins =
       await cultureAndTraditionService.createCultureandTraditins(
         req.body,
+        req.files,
         userId
       );
 

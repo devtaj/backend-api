@@ -1,7 +1,8 @@
 import CultureandTraditins from "../models/CultureandTraditins.js";
-
-const createCultureandTraditins= async (data, userId)=>{
-    const cultureandTraditinsData= await CultureandTraditins.create({...data, createdBy: userId});
+import uploadFile from "../utils/fileUploader.js";
+const createCultureandTraditins= async (data, files, userId)=>{
+    const uploadedFiles = await uploadFile(files);
+    const cultureandTraditinsData= await CultureandTraditins.create({...data, imageUrl: uploadedFiles.map(file => file.url), createdBy: userId});
     return cultureandTraditinsData;
 }
 

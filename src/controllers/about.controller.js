@@ -2,19 +2,28 @@ import { success } from "zod";
 import aboutService from "../services/about.service.js";
 
 
-const createAbout= async(req, res)=>{
-    try{
-        const about= await aboutService.createAbout(req.body);
+const createAbout = async (req, res) => {
+    try {
+        
 
-    res.status(201).json({
-        success:true,
-        message:"About posted Successfully",
-        data:about
-    });
-    }catch(error){
-        res.send(error.message)
+        const about = await aboutService.createAbout(
+            req.body,
+            req.files
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "About posted successfully",
+            data: about
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 const fetchAbout= async(req, res)=>{
     try{

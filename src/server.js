@@ -22,11 +22,11 @@ const upload= multer({storage:multer.memoryStorage()});
 connectDatabase();
 connectCloudinary();
 
-app.use("/api/tajpuriya-samaj/auth", logger, authRoutes);
+app.use("/api/tajpuriya-samaj/auth", logger, upload.single("image"), authRoutes);
 app.use("/api/tajpuriya-samaj/hero", logger,upload.array("images", 5),heroRoute);
-app.use("/api/tajpuriya-samaj/about",logger, aboutRoute);
-app.use("/api/tajpuriya-samaj/culture-and-tradition", logger, cultureAndTraditionRoute);
-app.use("/api/tajpuriya-samaj/stories", storyRoute)
+app.use("/api/tajpuriya-samaj/about",logger, upload.array("images", 5), aboutRoute);
+app.use("/api/tajpuriya-samaj/culture-and-tradition", upload.array("images", 5), logger, cultureAndTraditionRoute);
+app.use("/api/tajpuriya-samaj/stories",upload.array("images", 5),logger,  storyRoute);
 app.get("/", (req, res) => {
   res.json({
     status:"ok",

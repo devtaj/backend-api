@@ -7,7 +7,7 @@ const createStory = async (req, res) => {
   try {
     const userId = req.user?._id;
     console.log(userId);
-    const story= await storyService.createStory(req.body, userId);
+    const story= await storyService.createStory(req.body, req.files, userId);
     res.status(201).json({
         success:true,
         message:"Story Created Successfully.",

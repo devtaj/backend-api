@@ -105,6 +105,33 @@ const updateUser=async(req, res)=>{
   }
 }
 
+const updateImageUrl = async (req, res) => {
+    try {
+        const user = await authService.updateImageUrl(
+            req.user._id,
+            req.file
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully.",
+            data: user
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
 const deleteUser= async(req, res)=>{
   try{
     const user= await authService.deleteUser(req.params.id);
@@ -124,4 +151,4 @@ const deleteUser= async(req, res)=>{
 
 
 
-export default { registerUser, loginUser, fetchUser, updateUser, deleteUser};
+export default { registerUser, loginUser, fetchUser, updateUser, deleteUser, updateImageUrl };
